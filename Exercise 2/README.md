@@ -35,4 +35,4 @@ The above command runs the GalleryServiceConcurrencyFuzzing test for 10 iteratio
 
 Typically, you'll find enough log lines in the output to figure out any bugs. If you can't figure out from the console output and want to replay the buggy schedule in Visual Studio, you can do so using the following command:
 
-  coyote.exe replay TinyService.exe Output\TinyService2.exe\CoyoteOutput\<file>.schedule -b
+  coyote.exe replay TinyService.exe Output\TinyService.exe\CoyoteOutput\<file>.schedule -b
