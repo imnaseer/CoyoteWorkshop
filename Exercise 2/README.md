@@ -11,13 +11,13 @@ The first exercise asked you to implement a User controlled through which you ca
 
 You should use the AzureStorageProvider mock class for simulating interactions with the Azure Storage service.
 
-your code should satisfy the following constraints:
+Your code should satisfy the following constraints:
 
-* you cannot catch any exceptions in the gallery controller, or user controller
+* You cannot catch any exceptions in the Gallery controller, or User controller
 
-* your code should pass all the coyote tests
+* Your code should pass all the Coyote tests
 
-* you should only create the storage account for a user upon the first createalbum request
+* You should only create the storage account for a user upon the first CreateAlbum request
 
 * You should delete the storage account (which transitively deletes all the albums and pictures therein), if it exists, when deleting a User
 
