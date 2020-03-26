@@ -1,0 +1,25 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 15
+VisualStudioVersion = 15.0.28307.572
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TinyService", "TinyService.csproj", "{024D0754-5CBD-45EE-8B68-6D6D8135716E}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{024D0754-5CBD-45EE-8B68-6D6D8135716E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{024D0754-5CBD-45EE-8B68-6D6D8135716E}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{024D0754-5CBD-45EE-8B68-6D6D8135716E}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{024D0754-5CBD-45EE-8B68-6D6D8135716E}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {5F3C3292-FFB5-4650-8C07-E4321B3A6AE2}
+	EndGlobalSection
+EndGlobal
