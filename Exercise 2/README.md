@@ -23,7 +23,7 @@ Your code should satisfy the following constraints:
 
 ## Running Coyote Tests
 
-You can run Coyote tests as follows, from the bin/Debug folder:
+You can run Coyote tests as follows, from the bin/Debug/netcoreapp2.2 folder:
 
   dotnet coyote.dll test TinyService.dll --method GalleryServiceConcurrencyFuzzing -i 10 --max-steps 100 --verbose
 

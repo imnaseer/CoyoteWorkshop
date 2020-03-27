@@ -11,7 +11,7 @@ You're provided with an implementation of a `DatabaseProvider` class which is a 
 
 ## Running Coyote Tests
 
-You can run Coyote tests as follows, from the bin/Debug folder:
+You can run Coyote tests as follows, from the bin/Debug/netcoreapp2.2 folder:
 
   dotnet coyote.dll test TinyService.dll --method UserControllerConcurrencyFuzzing -i 10 --max-steps 100 --verbose
 
