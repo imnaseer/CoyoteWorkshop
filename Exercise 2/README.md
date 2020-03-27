@@ -25,14 +25,14 @@ Your code should satisfy the following constraints:
 
 You can run Coyote tests as follows, from the bin/Debug folder:
 
-  coyote.exe test TinyService.exe --method GalleryServiceConcurrencyFuzzing -i 10 --max-steps 100 --verbose
+  dotnet coyote.dll test TinyService.dll --method GalleryServiceConcurrencyFuzzing -i 10 --max-steps 100 --verbose
 
 The above command runs the GalleryServiceConcurrencyFuzzing test for 10 iterations, prints out log lines on the console and bounds the execution of each iteration to 100 steps. You can run the test for a higher number of iterations, though you might want to turn off verbosity in that mode.
 
-  coyote.exe test TinyService.exe --method GalleryServiceConcurrencyFuzzing -i 1000 --max-steps 100
+  dotnet coyote.dll test TinyService.dll --method GalleryServiceConcurrencyFuzzing -i 1000 --max-steps 100
 
 ## Replaying Tests
 
 Typically, you'll find enough log lines in the output to figure out any bugs. If you can't figure out from the console output and want to replay the buggy schedule in Visual Studio, you can do so using the following command:
 
-  coyote.exe replay TinyService.exe Output\TinyService.exe\CoyoteOutput\<file>.schedule -b
+  dotnet coyote.dll replay TinyService.dll Output\TinyService.exe\CoyoteOutput\<file>.schedule --method GalleryServiceConcurrencyFuzzing -b

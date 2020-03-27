@@ -66,7 +66,6 @@ namespace TinyService
     public class User
     {
         public string UserName;
-        public string UniqueId;
         public string EmailAddress;
         public string PhoneNumber;
         public Address Address;
@@ -78,7 +77,6 @@ namespace TinyService
         public User(string userName, Document doc)
         {
             this.UserName = userName;
-            this.UniqueId = doc[Constants.UniqueId];
             this.EmailAddress = doc[Constants.EmailAddress];
             this.PhoneNumber = doc[Constants.PhoneNumber];
             this.Address = new Address(doc[Constants.MailingAddress], doc[Constants.BillingAddress]);
