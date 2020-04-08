@@ -272,6 +272,7 @@ namespace TinyService
         {
             DatabaseProvider.Cleanup();
             AzureStorageProvider.Cleanup();
+            Logger.ResetNextLoggerId();
         }
 
         static void Main(string[] args)

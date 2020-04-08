@@ -128,6 +128,7 @@ namespace TinyService
         public static void IterationCleanup()
         {
             DatabaseProvider.Cleanup();
+            Logger.ResetNextLoggerId();
         }
 
         static void Main(string[] args)
