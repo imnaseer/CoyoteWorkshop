@@ -16,14 +16,11 @@ namespace TinyService
             { Constants.UserCollection, new Collection() }
         };
 
-        private string context;
-
         private Logger logger;
 
-        public DatabaseProvider(string context)
+        public DatabaseProvider(string context, Logger parentLogger)
         {
-            this.context = context;
-            logger = new Logger($"{nameof(DatabaseProvider)} - {context}");
+            logger = new Logger($"{nameof(DatabaseProvider)} - {context}", parentLogger.FlowId);
         }
 
         public async Task AddDocument(string collectionName, string rowKey, Document doc)

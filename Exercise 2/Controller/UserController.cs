@@ -11,8 +11,6 @@ namespace TinyService
     // TODO: Implement the methods of the User Controller
     public class UserController
     {
-        private Logger logger = new Logger(nameof(UserController));
-
         public async Task<ActionResult<User>> CreateUser(
             string userName,
             string email,
@@ -20,9 +18,11 @@ namespace TinyService
             string mailingAddress,
             string billingAddress)
         {
+            var logger = new Logger(nameof(UserController));
+
             logger.Write($"Creating user {userName}, {email}, {phoneNumber}, {mailingAddress}, {billingAddress}");
 
-            var db = new DatabaseProvider("CreateUser");
+            var db = new DatabaseProvider("CreateUser", logger);
 
             // TODO: Implement the logic
 
@@ -31,9 +31,11 @@ namespace TinyService
 
         public async Task<ActionResult<User>> GetUser(string userName)
         {
+            var logger = new Logger(nameof(UserController));
+
             logger.Write("Get user " + userName);
 
-            var db = new DatabaseProvider("GetUser");
+            var db = new DatabaseProvider("GetUser", logger);
 
             // TODO: Implement the logic
 
@@ -42,9 +44,11 @@ namespace TinyService
 
         public async Task<ActionResult<Address>> UpdateUserAddress(string userName, string mailingAddress, string billingAddress)
         {
+            var logger = new Logger(nameof(UserController));
+
             logger.Write($"Updating user address {userName} {mailingAddress} {billingAddress}");
 
-            var db = new DatabaseProvider("UpdateUserAddress");
+            var db = new DatabaseProvider("UpdateUserAddress", logger);
 
             // TODO: Implement the logic
 
@@ -53,9 +57,11 @@ namespace TinyService
 
         public async Task<ActionResult<User>> DeleteUser(string userName)
         {
+            var logger = new Logger(nameof(UserController));
+
             logger.Write("Deleting user " + userName);
 
-            var db = new DatabaseProvider("DeleteUser");
+            var db = new DatabaseProvider("DeleteUser", logger);
 
             // TODO: Implement the logic
 

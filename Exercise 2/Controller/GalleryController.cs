@@ -9,26 +9,31 @@ namespace TinyService
     // TODO: Implement the methods of the User Controller
     public class GalleryController
     {
-        private Logger logger = new Logger(nameof(GalleryController));
-
         public async Task<ActionResult<Album>> CreateAlbum(string userName, string albumName)
         {
+            var logger = new Logger(nameof(GalleryController));
+
             logger.Write("Creating album " + userName + ", " + albumName);
 
-            var db = new DatabaseProvider("CreateAlbum");
-            var storage = new AzureStorageProvider("CreateAlbum");
+            var db = new DatabaseProvider("CreateAlbum", logger);
+            var storage = new AzureStorageProvider("CreateAlbum", logger);
 
             // TODO: Implement the logic
+
+            // Remember to lazily create the storage account for the user if it doesn't exist
+            // Also, don't forget to delete that storage account when the user is deleted in the UserController
 
             return null;
         }
 
         public async Task<ActionResult<Album>> DeleteAlbum(string userName, string albumName)
         {
+            var logger = new Logger(nameof(GalleryController));
+
             logger.Write("Deleting album " + userName + ", " + albumName);
 
-            var db = new DatabaseProvider("DeleteAlbum");
-            var storage = new AzureStorageProvider("DeleteAlbum");
+            var db = new DatabaseProvider("DeleteAlbum", logger);
+            var storage = new AzureStorageProvider("DeleteAlbum", logger);
 
             // TODO: Implement the logic
 
@@ -37,10 +42,12 @@ namespace TinyService
 
         public async Task<ActionResult<Picture>> UploadPicture(string userName, string albumName, string pictureName, string pictureContents)
         {
+            var logger = new Logger(nameof(GalleryController));
+
             logger.Write("Uploading picture " + userName + ", " + albumName + ", " + pictureName);
 
-            var db = new DatabaseProvider("UploadPicture");
-            var storage = new AzureStorageProvider("UploadPicture");
+            var db = new DatabaseProvider("UploadPicture", logger);
+            var storage = new AzureStorageProvider("UploadPicture", logger);
 
             // TODO: Implement the logic
 
@@ -49,10 +56,12 @@ namespace TinyService
 
         public async Task<ActionResult<Picture>> RetrievePicture(string userName, string albumName, string pictureName)
         {
+            var logger = new Logger(nameof(GalleryController));
+
             logger.Write("Retrieving picture " + userName + ", " + albumName + ", " + pictureName);
 
-            var db = new DatabaseProvider("RetrievePicture");
-            var storage = new AzureStorageProvider("RetrievePicture");
+            var db = new DatabaseProvider("RetrievePicture", logger);
+            var storage = new AzureStorageProvider("RetrievePicture", logger);
 
             // TODO: Implement the logic
 
@@ -61,10 +70,12 @@ namespace TinyService
 
         public async Task<ActionResult<Picture>> DeletePicture(string userName, string albumName, string pictureName)
         {
+            var logger = new Logger(nameof(GalleryController));
+
             logger.Write("Deleting picture " + userName + ", " + albumName + ", " + pictureName);
 
-            var db = new DatabaseProvider("DeletePicture");
-            var storage = new AzureStorageProvider("DeletePicture");
+            var db = new DatabaseProvider("DeletePicture", logger);
+            var storage = new AzureStorageProvider("DeletePicture", logger);
 
             // TODO: Implement the logic
 

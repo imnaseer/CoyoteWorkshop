@@ -10,14 +10,11 @@ namespace TinyService
     {
         private static Dictionary<string, Dictionary<string, Dictionary<string, string>>> storageAccounts = new Dictionary<string, Dictionary<string, Dictionary<string, string>>>();
 
-        private string context;
-
         private Logger logger;
 
-        public AzureStorageProvider(string context)
+        public AzureStorageProvider(string context, Logger parentLogger)
         {
-            this.context = context;
-            this.logger = new Logger($"{nameof(AzureStorageProvider)} - {context}");
+            this.logger = new Logger($"{nameof(AzureStorageProvider)} - {context}", parentLogger.FlowId);
         }
 
         public async Task CreateAccount(string accountName)

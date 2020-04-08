@@ -8,16 +8,32 @@ namespace TinyService
 {
     public class Logger
     {
-        private string context;
+        private static int nextFlowId = 1;
+
+        public string Context { private set; get; }
+
+        public int FlowId { private set; get; }
 
         public Logger(string context)
         {
-            this.context = context;
+            this.Context = context;
+            this.FlowId = nextFlowId++;
+        }
+
+        public Logger(string context, int flowId)
+        {
+            this.Context = context;
+            this.FlowId = flowId;
         }
 
         public void Write(string msg)
         {
-            Console.WriteLine($"[{context}] {msg}");
+            Console.WriteLine($" -- {this.FlowId} -- [{Context}] {msg}");
+        }
+
+        public static void ResetNextLoggerId()
+        {
+            nextFlowId = 1;
         }
     }
 }

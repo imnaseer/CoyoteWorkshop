@@ -210,8 +210,9 @@ namespace TinyService
             var userController = new UserController();
             var galleryController = new GalleryController();
 
-            var db = new DatabaseProvider("Test");
-            var storage = new AzureStorageProvider("Test");
+            var logger = new Logger("DeleteWithConcurrentAPIs");
+            var db = new DatabaseProvider("Test", logger);
+            var storage = new AzureStorageProvider("Test", logger);
 
             var createResult = await userController.CreateUser(userName, emailAddress, phoneNumber, mailingAddress, billingAddress);
             Assert(createResult.Success);
