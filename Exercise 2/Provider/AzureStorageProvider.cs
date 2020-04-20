@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -8,7 +9,8 @@ namespace TinyService
 {
     public class AzureStorageProvider
     {
-        private static Dictionary<string, Dictionary<string, Dictionary<string, string>>> storageAccounts = new Dictionary<string, Dictionary<string, Dictionary<string, string>>>();
+        private static ConcurrentDictionary<string, ConcurrentDictionary<string, ConcurrentDictionary<string, string>>> storageAccounts =
+            new ConcurrentDictionary<string, ConcurrentDictionary<string, ConcurrentDictionary<string, string>>>();
 
         private Logger logger;
 
@@ -28,7 +30,7 @@ namespace TinyService
                 throw new AzureStorageException($"Storage account {accountName} already exists");
             }
 
-            storageAccounts[accountName] = new Dictionary<string, Dictionary<string, string>>();
+            storageAccounts[accountName] = new ConcurrentDictionary<string, ConcurrentDictionary<string, string>>();
         }
 
         public async Task DeleteAccount(string accountName)
@@ -42,7 +44,8 @@ namespace TinyService
                 throw new AzureStorageException($"Storage account {accountName} does not exist");
             }
 
-            storageAccounts.Remove(accountName);
+            ConcurrentDictionary<string, ConcurrentDictionary<string, string>> account;
+            storageAccounts.Remove(accountName, out account);
         }
 
         public async Task<bool> DoesAccountExits(string accountName)
@@ -70,7 +73,7 @@ namespace TinyService
                 throw new AzureStorageException($"Storage container {accountName}:{containerName} already exists");
             }
 
-            storageAccounts[accountName][containerName] = new Dictionary<string, string>();
+            storageAccounts[accountName][containerName] = new ConcurrentDictionary<string, string>();
         }
 
         public async Task DeleteContainer(string accountName, string containerName)
@@ -89,7 +92,8 @@ namespace TinyService
                 throw new AzureStorageException($"Storage container {accountName}:{containerName} does not exist");
             }
 
-            storageAccounts[accountName].Remove(containerName);
+            ConcurrentDictionary<string, string> container;
+            storageAccounts[accountName].Remove(containerName, out container);
         }
 
         public async Task<bool> DoesContainerExist(string accountName, string containerName)
@@ -175,7 +179,8 @@ namespace TinyService
                 throw new AzureStorageException($"Storage blob {accountName}:{containerName}:{blobName} does not exist");
             }
 
-            storageAccounts[accountName][containerName].Remove(blobName);
+            string blob;
+            storageAccounts[accountName][containerName].Remove(blobName, out blob);
         }
 
         public async Task<bool> DoesBlobExist(string accountName, string containerName, string blobName)
@@ -303,7 +308,7 @@ namespace TinyService
 
         public static void Cleanup()
         {
-            storageAccounts = new Dictionary<string, Dictionary<string, Dictionary<string, string>>>();
+            storageAccounts = new ConcurrentDictionary<string, ConcurrentDictionary<string, ConcurrentDictionary<string, string>>>();
         }
     }
 

@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -6,15 +7,17 @@ using Microsoft.Coyote.Tasks;
 
 namespace TinyService
 {
-    using Document = Dictionary<string, string>;
-    using Collection = Dictionary<string, Dictionary<string, string>>;
+    using Document = ConcurrentDictionary<string, string>;
+    using Collection = ConcurrentDictionary<string, ConcurrentDictionary<string, string>>;
 
     public class DatabaseProvider
     {
-        public static Dictionary<string, Collection> collections = new Dictionary<string, Collection>()
+        public static ConcurrentDictionary<string, Collection> collections = new ConcurrentDictionary<string, Collection>();
+        
+        static DatabaseProvider()
         {
-            { Constants.UserCollection, new Collection() }
-        };
+            collections[Constants.UserCollection] = new Collection();
+        }
 
         private Logger logger;
 
@@ -117,7 +120,8 @@ namespace TinyService
                 }
                 else
                 {
-                    collection.Remove(rowKey);
+                    Document doc;
+                    collection.Remove(rowKey, out doc);
                 }
             });
         }
