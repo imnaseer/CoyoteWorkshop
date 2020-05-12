@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -6,7 +7,7 @@ using Microsoft.Coyote.Tasks;
 
 namespace TinyService
 {
-    using Document = Dictionary<string, string>;
+    using Document = ConcurrentDictionary<string, string>;
 
     // TODO: Implement the methods of the User Controller
     public class UserController
@@ -37,9 +38,18 @@ namespace TinyService
 
             var db = new DatabaseProvider("GetUser", logger);
 
-            // TODO: Implement the logic
+            if (!await db.DoesDocumentExist(Constants.UserCollection, userName))
+            {
+                return new ActionResult<User>() { Success = false };
+            }
 
-            return null;
+            var userDoc = await db.GetDocument(Constants.UserCollection, userName);
+
+            return new ActionResult<User>()
+            {
+                Success = true,
+                Response = new User(userName, userDoc)
+            };
         }
 
         public async Task<ActionResult<Address>> UpdateUserAddress(string userName, string mailingAddress, string billingAddress)

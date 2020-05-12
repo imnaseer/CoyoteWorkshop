@@ -5,7 +5,6 @@ using System.Linq;
 using System.Text;
 using Microsoft.Coyote.Tasks;
 
-
 namespace TinyService
 {
     using Document = ConcurrentDictionary<string, string>;
@@ -165,6 +164,82 @@ namespace TinyService
                 return table.ContainsKey(rowKey);
             });
         }
+
+        public async Task<bool> AddDocumentIfNotExists(string collectionName, string rowKey, Document doc)
+        {
+            logger.Write($"AddDocumentIfNotExists {rowKey}, {DocToStr(doc)} in collection {collectionName}");
+
+            try
+            {
+                await this.AddDocument(collectionName, rowKey, doc);
+                return true;
+            }
+            catch (DatabaseException)
+            {
+                return false;
+            }
+        }
+
+        public async Task<bool> UpdateDocumentIfExists(string collectionName, string rowKey, Document doc)
+        {
+            logger.Write($"UpdateDocumentIfExists {rowKey}, {DocToStr(doc)} in collection {collectionName}");
+
+            try
+            {
+                await this.UpdateDocument(collectionName, rowKey, doc);
+                return true;
+            }
+            catch (DatabaseException)
+            {
+                return false;
+            }
+        }
+
+        public async Task<bool> UpdateKeyInDocumentIfExists(string collectionName, string rowKey, string docKey, string docValue)
+        {
+            logger.Write($"UpdateKeyInDocumentIfExists {rowKey}, {docKey}, {docValue} in collection {collectionName}");
+
+            try
+            {
+                await this.UpdateKeyInDocument(collectionName, rowKey, docKey, docValue);
+                return true;
+            }
+            catch (DatabaseException)
+            {
+                return false;
+            }
+        }
+
+        public async Task<bool> DeleteDocumentIfExists(string collectionName, string rowKey)
+        {
+            logger.Write($"DeleteDocumentIfExists {rowKey} in collection {collectionName}");
+
+            try
+            {
+                await this.DeleteDocument(collectionName, rowKey);
+                return true;
+            }
+            catch (DatabaseException)
+            {
+                return false;
+            }
+        }
+
+        public async Task<Document> GetDocumentIfExists(string collectionName, string rowKey)
+        {
+            logger.Write($"GetDocumentIfExists {rowKey} in collection {collectionName}");
+
+            try
+            {
+                var value = await GetDocument(collectionName, rowKey);
+                return value;
+            }
+            catch (DatabaseException)
+            {
+                return null;
+            }
+        }
+
         public static void Cleanup()
         {
             collections[Constants.UserCollection].Clear();

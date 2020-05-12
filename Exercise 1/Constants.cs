@@ -10,7 +10,6 @@ namespace TinyService
     {
         public const string UserCollection = "Users";
 
-        public const string UniqueId = "UniqueId";
         public const string EmailAddress = "EmailAddress";
         public const string PhoneNumber = "PhoneNumber";
         public const string MailingAddress = "MailingAddress";
