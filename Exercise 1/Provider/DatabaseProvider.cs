@@ -1,14 +1,12 @@
 ﻿using System;
 using System.Collections.Concurrent;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using Microsoft.Coyote.Tasks;
 
 namespace TinyService
 {
-    using Document = ConcurrentDictionary<string, string>;
     using Collection = ConcurrentDictionary<string, ConcurrentDictionary<string, string>>;
+    using Document = ConcurrentDictionary<string, string>;
 
     public class DatabaseProvider
     {
@@ -34,14 +32,18 @@ namespace TinyService
 
                 if (!collections.ContainsKey(collectionName))
                 {
-                    throw new DatabaseException($"Collection {collectionName} does not exist");
+                    var message = $"Collection {collectionName} does not exist";
+                    logger.WriteException(message);
+                    throw new DatabaseException(message);
                 }
 
                 var collection = collections[collectionName];
 
                 if (collection.ContainsKey(rowKey))
                 {
-                    throw new DatabaseException($"AddRow: {rowKey} already exists");
+                    var message = $"AddRow: {rowKey} already exists";
+                    logger.WriteException(message);
+                    throw new DatabaseException(message);
                 }
                 else
                 {
@@ -58,14 +60,18 @@ namespace TinyService
 
                 if (!collections.ContainsKey(collectionName))
                 {
-                    throw new DatabaseException($"Collection {collectionName} does not exist");
+                    var message = $"Collection {collectionName} does not exist";
+                    logger.WriteException(message);
+                    throw new DatabaseException(message);
                 }
 
                 var collection = collections[collectionName];
 
                 if (!collection.ContainsKey(rowKey))
                 {
-                    throw new DatabaseException($"UpdateRow: {rowKey} does not exist");
+                    var message = $"UpdateRow: {rowKey} does not exist";
+                    logger.WriteException(message);
+                    throw new DatabaseException(message);
                 }
 
                 collection[rowKey] = doc;
@@ -80,21 +86,27 @@ namespace TinyService
 
                 if (!collections.ContainsKey(collectionName))
                 {
-                    throw new DatabaseException($"Collection {collectionName} does not exist");
+                    var message = $"Collection {collectionName} does not exist";
+                    logger.WriteException(message);
+                    throw new DatabaseException(message);
                 }
 
                 var collection = collections[collectionName];
 
                 if (!collection.ContainsKey(rowKey))
                 {
-                    throw new DatabaseException($"UpdateKeyInDocument: {rowKey} does not exist");
+                    var message = $"UpdateKeyInDocument: {rowKey} does not exist";
+                    logger.WriteException(message);
+                    throw new DatabaseException(message);
                 }
 
                 var doc = collection[rowKey];
 
                 if (!doc.ContainsKey(docKey))
                 {
-                    throw new DatabaseException($"UpdateKeyInDocument: {docKey} does not exist in document");
+                    var message = $"UpdateKeyInDocument: {docKey} does not exist in document";
+                    logger.WriteException(message);
+                    throw new DatabaseException(message);
                 }
 
                 doc[docKey] = docValue;
@@ -109,14 +121,18 @@ namespace TinyService
 
                 if (!collections.ContainsKey(collectionName))
                 {
-                    throw new DatabaseException($"Collection {collectionName} does not exist");
+                    var message = $"Collection {collectionName} does not exist";
+                    logger.WriteException(message);
+                    throw new DatabaseException(message);
                 }
 
                 var collection = collections[collectionName];
 
                 if (!collection.ContainsKey(rowKey))
                 {
-                    throw new DatabaseException($"DeleteRow: {rowKey} does not exist");
+                    var message = $"DeleteRow: {rowKey} does not exist";
+                    logger.WriteException(message);
+                    throw new DatabaseException(message);
                 }
                 else
                 {
@@ -134,14 +150,18 @@ namespace TinyService
 
                 if (!collections.ContainsKey(collectionName))
                 {
-                    throw new DatabaseException($"Collection {collectionName} does not exist");
+                    var message = $"Collection {collectionName} does not exist";
+                    logger.WriteException(message);
+                    throw new DatabaseException(message);
                 }
 
                 var collection = collections[collectionName];
 
                 if (!collection.ContainsKey(rowKey))
                 {
-                    throw new DatabaseException($"GetValue: {rowKey} does not exit");
+                    var message = $"GetValue: {rowKey} does not exit";
+                    logger.WriteException(message);
+                    throw new DatabaseException(message);
                 }
 
                 return collection[rowKey];
@@ -156,7 +176,9 @@ namespace TinyService
 
                 if (!collections.ContainsKey(collectionName))
                 {
-                    throw new DatabaseException($"Collection {collectionName} does not exist");
+                    var message = $"Collection {collectionName} does not exist";
+                    logger.WriteException(message);
+                    throw new DatabaseException(message);
                 }
 
                 var table = collections[collectionName];
@@ -171,12 +193,17 @@ namespace TinyService
 
             try
             {
+                logger.SuppressExceptionLogging(true);
                 await this.AddDocument(collectionName, rowKey, doc);
                 return true;
             }
             catch (DatabaseException)
             {
                 return false;
+            }
+            finally
+            {
+                logger.SuppressExceptionLogging(false);
             }
         }
 
@@ -186,12 +213,17 @@ namespace TinyService
 
             try
             {
+                logger.SuppressExceptionLogging(true);
                 await this.UpdateDocument(collectionName, rowKey, doc);
                 return true;
             }
             catch (DatabaseException)
             {
                 return false;
+            }
+            finally
+            {
+                logger.SuppressExceptionLogging(false);
             }
         }
 
@@ -201,12 +233,17 @@ namespace TinyService
 
             try
             {
+                logger.SuppressExceptionLogging(true);
                 await this.UpdateKeyInDocument(collectionName, rowKey, docKey, docValue);
                 return true;
             }
             catch (DatabaseException)
             {
                 return false;
+            }
+            finally
+            {
+                logger.SuppressExceptionLogging(false);
             }
         }
 
@@ -216,12 +253,17 @@ namespace TinyService
 
             try
             {
+                logger.SuppressExceptionLogging(true);
                 await this.DeleteDocument(collectionName, rowKey);
                 return true;
             }
             catch (DatabaseException)
             {
                 return false;
+            }
+            finally
+            {
+                logger.SuppressExceptionLogging(false);
             }
         }
 
@@ -231,12 +273,17 @@ namespace TinyService
 
             try
             {
+                logger.SuppressExceptionLogging(true);
                 var value = await GetDocument(collectionName, rowKey);
                 return value;
             }
             catch (DatabaseException)
             {
                 return null;
+            }
+            finally
+            {
+                logger.SuppressExceptionLogging(false);
             }
         }
 

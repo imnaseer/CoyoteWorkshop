@@ -1,8 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using Microsoft.Coyote.Specifications;
 using Microsoft.Coyote.Runtime;
 using Microsoft.Coyote.Tasks;
 

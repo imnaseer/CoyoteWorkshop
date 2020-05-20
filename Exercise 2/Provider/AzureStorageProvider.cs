@@ -1,8 +1,6 @@
 ﻿using System;
 using System.Collections.Concurrent;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using Microsoft.Coyote.Tasks;
 
 namespace TinyService
@@ -27,7 +25,9 @@ namespace TinyService
 
             if (storageAccounts.ContainsKey(accountName))
             {
-                throw new AzureStorageException($"Storage account {accountName} already exists");
+                var message = $"Storage account {accountName} already exists";
+                logger.WriteException(message);
+                throw new AzureStorageException(message);
             }
 
             storageAccounts[accountName] = new ConcurrentDictionary<string, ConcurrentDictionary<string, string>>();
@@ -41,7 +41,9 @@ namespace TinyService
 
             if (!storageAccounts.ContainsKey(accountName))
             {
-                throw new AzureStorageException($"Storage account {accountName} does not exist");
+                var message = $"Storage account {accountName} does not exist";
+                logger.WriteException(message);
+                throw new AzureStorageException(message);
             }
 
             ConcurrentDictionary<string, ConcurrentDictionary<string, string>> account;
@@ -65,12 +67,16 @@ namespace TinyService
 
             if (!storageAccounts.ContainsKey(accountName))
             {
-                throw new AzureStorageException($"Storage account {accountName} does not exist");
+                var message = $"Storage account {accountName} does not exist";
+                logger.WriteException(message);
+                throw new AzureStorageException(message);
             }
 
             if (storageAccounts[accountName].ContainsKey(containerName))
             {
-                throw new AzureStorageException($"Storage container {accountName}:{containerName} already exists");
+                var message = $"Storage container {accountName}:{containerName} already exists";
+                logger.WriteException(message);
+                throw new AzureStorageException(message);
             }
 
             storageAccounts[accountName][containerName] = new ConcurrentDictionary<string, string>();
@@ -84,12 +90,16 @@ namespace TinyService
 
             if (!storageAccounts.ContainsKey(accountName))
             {
-                throw new AzureStorageException($"Storage account {accountName} does not exist");
+                var message = $"Storage account {accountName} does not exist";
+                logger.WriteException(message);
+                throw new AzureStorageException(message);
             }
 
             if (!storageAccounts[accountName].ContainsKey(containerName))
             {
-                throw new AzureStorageException($"Storage container {accountName}:{containerName} does not exist");
+                var message = $"Storage container {accountName}:{containerName} does not exist";
+                logger.WriteException(message);
+                throw new AzureStorageException(message);
             }
 
             ConcurrentDictionary<string, string> container;
@@ -104,7 +114,9 @@ namespace TinyService
 
             if (!storageAccounts.ContainsKey(accountName))
             {
-                throw new AzureStorageException($"Storage account {accountName} does not exist");
+                var message = $"Storage account {accountName} does not exist";
+                logger.WriteException(message);
+                throw new AzureStorageException(message);
             }
 
             return storageAccounts[accountName].ContainsKey(containerName);
@@ -118,17 +130,23 @@ namespace TinyService
 
             if (!storageAccounts.ContainsKey(accountName))
             {
-                throw new AzureStorageException($"Storage account {accountName} does not exist");
+                var message = $"Storage account {accountName} does not exist";
+                logger.WriteException(message);
+                throw new AzureStorageException(message);
             }
 
             if (!storageAccounts[accountName].ContainsKey(containerName))
             {
-                throw new AzureStorageException($"Storage container {accountName}:{containerName} does not exist");
+                var message = $"Storage container {accountName}:{containerName} does not exist";
+                logger.WriteException(message);
+                throw new AzureStorageException(message);
             }
 
             if (storageAccounts[accountName][containerName].ContainsKey(blobName))
             {
-                throw new AzureStorageException($"Storage blob {accountName}:{containerName}:{blobName} already exists");
+                var message = $"Storage blob {accountName}:{containerName}:{blobName} already exists";
+                logger.WriteException(message);
+                throw new AzureStorageException(message);
             }
 
             storageAccounts[accountName][containerName][blobName] = blobContents;
@@ -142,17 +160,23 @@ namespace TinyService
 
             if (!storageAccounts.ContainsKey(accountName))
             {
-                throw new AzureStorageException($"Storage account {accountName} does not exist");
+                var message = $"Storage account {accountName} does not exist";
+                logger.WriteException(message);
+                throw new AzureStorageException(message);
             }
 
             if (!storageAccounts[accountName].ContainsKey(containerName))
             {
-                throw new AzureStorageException($"Storage container {accountName}:{containerName} does not exist");
+                var message = $"Storage container {accountName}:{containerName} does not exist";
+                logger.WriteException(message);
+                throw new AzureStorageException(message);
             }
 
             if (!storageAccounts[accountName][containerName].ContainsKey(blobName))
             {
-                throw new AzureStorageException($"Storage blob {accountName}:{containerName}:{blobName} does not exist");
+                var message = $"Storage blob {accountName}:{containerName}:{blobName} does not exist";
+                logger.WriteException(message);
+                throw new AzureStorageException(message);
             }
 
             return storageAccounts[accountName][containerName][blobName];
@@ -166,17 +190,23 @@ namespace TinyService
 
             if (!storageAccounts.ContainsKey(accountName))
             {
-                throw new AzureStorageException($"Storage account {accountName} does not exist");
+                var message = $"Storage account {accountName} does not exist";
+                logger.WriteException(message);
+                throw new AzureStorageException(message);
             }
 
             if (!storageAccounts[accountName].ContainsKey(containerName))
             {
-                throw new AzureStorageException($"Storage container {accountName}:{containerName} does not exist");
+                var message = $"Storage container {accountName}:{containerName} does not exist";
+                logger.WriteException(message);
+                throw new AzureStorageException(message);
             }
 
             if (!storageAccounts[accountName][containerName].ContainsKey(blobName))
             {
-                throw new AzureStorageException($"Storage blob {accountName}:{containerName}:{blobName} does not exist");
+                var message = $"Storage blob {accountName}:{containerName}:{blobName} does not exist";
+                logger.WriteException(message);
+                throw new AzureStorageException(message);
             }
 
             string blob;
@@ -191,12 +221,16 @@ namespace TinyService
 
             if (!storageAccounts.ContainsKey(accountName))
             {
-                throw new AzureStorageException($"Storage account {accountName} does not exist");
+                var message = $"Storage account {accountName} does not exist";
+                logger.WriteException(message);
+                throw new AzureStorageException(message);
             }
 
             if (!storageAccounts[accountName].ContainsKey(containerName))
             {
-                throw new AzureStorageException($"Storage container {accountName}:{containerName} does not exist");
+                var message = $"Storage container {accountName}:{containerName} does not exist";
+                logger.WriteException(message);
+                throw new AzureStorageException(message);
             }
 
             return storageAccounts[accountName][containerName].ContainsKey(blobName);
@@ -208,12 +242,17 @@ namespace TinyService
 
             try
             {
+                logger.SuppressExceptionLogging(true);
                 await CreateAccount(accountName);
                 return true;
             }
             catch (AzureStorageException)
             {
                 return false;
+            }
+            finally
+            {
+                logger.SuppressExceptionLogging(false);
             }
         }
 
@@ -223,12 +262,17 @@ namespace TinyService
 
             try
             {
+                logger.SuppressExceptionLogging(true);
                 await CreateContainer(accountName, containerName);
                 return true;
             }
             catch (AzureStorageException)
             {
                 return false;
+            }
+            finally
+            {
+                logger.SuppressExceptionLogging(false);
             }
         }
 
@@ -238,12 +282,17 @@ namespace TinyService
 
             try
             {
+                logger.SuppressExceptionLogging(true);
                 await CreateBlob(accountName, containerName, blobName, blobContents);
                 return true;
             }
             catch (AzureStorageException)
             {
                 return false;
+            }
+            finally
+            {
+                logger.SuppressExceptionLogging(false);
             }
         }
 
@@ -253,12 +302,17 @@ namespace TinyService
 
             try
             {
+                logger.SuppressExceptionLogging(true);
                 await DeleteBlob(accountName, containerName, blobName);
                 return true;
             }
             catch (AzureStorageException)
             {
                 return false;
+            }
+            finally
+            {
+                logger.SuppressExceptionLogging(false);
             }
         }
 
@@ -268,12 +322,17 @@ namespace TinyService
 
             try
             {
+                logger.SuppressExceptionLogging(true);
                 await DeleteContainer(accountName, containerName);
                 return true;
             }
             catch (AzureStorageException)
             {
                 return false;
+            }
+            finally
+            {
+                logger.SuppressExceptionLogging(false);
             }
         }
 
@@ -283,12 +342,17 @@ namespace TinyService
 
             try
             {
+                logger.SuppressExceptionLogging(true);
                 await DeleteAccount(accountName);
                 return true;
             }
             catch (AzureStorageException)
             {
                 return false;
+            }
+            finally
+            {
+                logger.SuppressExceptionLogging(false);
             }
         }
 
@@ -298,11 +362,16 @@ namespace TinyService
 
             try
             {
+                logger.SuppressExceptionLogging(true);
                 return await GetBlobContents(accountName, containerName, blobName);
             }
             catch (AzureStorageException)
             {
                 return null;
+            }
+            finally
+            {
+                logger.SuppressExceptionLogging(false);
             }
         }
 
