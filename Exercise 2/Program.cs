@@ -224,7 +224,7 @@ namespace TinyService
 
 
         [Microsoft.Coyote.SystematicTesting.Test]
-        public static async Task DeleteWithConcurrentAPIs(ICoyoteRuntime runtime)
+        public static async Task UserDeleteWithConcurrentAPIs(ICoyoteRuntime runtime)
         {
             var userName = "user1";
             var emailAddress = "bob@abc.com";
@@ -293,6 +293,114 @@ namespace TinyService
             Assert(deleteResult.Success);
             Assert(!await db.DoesDocumentExist(Constants.UserCollection, userName));
             Assert(!await storage.DoesAccountExits(doc[Constants.UniqueId]));
+        }
+
+        [Microsoft.Coyote.SystematicTesting.Test]
+        public static async Task ConcurrentAlbumCreates(ICoyoteRuntime runtime)
+        {
+            var userName = "user1";
+            var emailAddress = "bob@abc.com";
+            var phoneNumber = "425-123-1234";
+            var mailingAddress = "101 100th Ave NE Redmond WA";
+            var billingAddress = "101 100th Ave NE Redmond WA";
+            var albumName = "myAlbum";
+
+            var storageProvider = new AzureStorageProvider("Test", new Logger("Test"));
+
+            var userController = new UserController();
+            var createResult = await userController.CreateUser(userName, emailAddress, phoneNumber, mailingAddress, billingAddress);
+            Assert(createResult.Success);
+            CheckUser(createResult.Response);
+            Assert(!await storageProvider.DoesAccountExits(userName));
+
+            var galleryController = new GalleryController();
+            var createAlbumTask1 = galleryController.CreateAlbum(userName, albumName);
+            var createAlbumTask2 = galleryController.CreateAlbum(userName, albumName);
+
+            await Task.WhenAll(createAlbumTask1, createAlbumTask2);
+
+            Assert(createAlbumTask1.Result.Success ^ createAlbumTask2.Result.Success);
+            Assert(await storageProvider.DoesAccountExits(userName));
+            Assert(await storageProvider.DoesContainerExist(userName, albumName));
+
+            var album = createAlbumTask1.Result.Success ?
+                createAlbumTask1.Result.Response :
+                createAlbumTask2.Result.Response;
+
+            CheckAlbum(album);
+        }
+
+        [Microsoft.Coyote.SystematicTesting.Test]
+        public static async Task ConcurrentPictureCreates(ICoyoteRuntime runtime)
+        {
+            var userName = "user1";
+            var emailAddress = "bob@abc.com";
+            var phoneNumber = "425-123-1234";
+            var mailingAddress = "101 100th Ave NE Redmond WA";
+            var billingAddress = "101 100th Ave NE Redmond WA";
+            var albumName = "myAlbum";
+            var pictureName = "pic.jpg";
+            var pictureContents = "0x2321";
+
+            var userController = new UserController();
+            var createResult = await userController.CreateUser(userName, emailAddress, phoneNumber, mailingAddress, billingAddress);
+            Assert(createResult.Success);
+
+            var galleryController = new GalleryController();
+            var createAlbumResult = await galleryController.CreateAlbum(userName, albumName);
+            Assert(createAlbumResult.Success);
+            CheckAlbum(createAlbumResult.Response);
+
+            var pictureCreateTask1 = galleryController.UploadPicture(userName, albumName, pictureName, pictureContents);
+            var pictureCreateTask2 = galleryController.UploadPicture(userName, albumName, pictureName, pictureContents);
+            await Task.WhenAll(pictureCreateTask1, pictureCreateTask2);
+
+            Assert(pictureCreateTask1.Result.Success ^ pictureCreateTask1.Result.Success);
+
+            var picture = pictureCreateTask1.Result.Success ?
+                pictureCreateTask1.Result.Response :
+                pictureCreateTask2.Result.Response;
+
+            CheckPicture(picture);
+        }
+
+        [Microsoft.Coyote.SystematicTesting.Test]
+        public static async Task ConcurrentAlbumDeletes(ICoyoteRuntime runtime)
+        {
+            var userName = "user1";
+            var emailAddress = "bob@abc.com";
+            var phoneNumber = "425-123-1234";
+            var mailingAddress = "101 100th Ave NE Redmond WA";
+            var billingAddress = "101 100th Ave NE Redmond WA";
+            var albumName = "myAlbum";
+
+            var storageProvider = new AzureStorageProvider("Test", new Logger("Test"));
+
+            var userController = new UserController();
+            var createResult = await userController.CreateUser(userName, emailAddress, phoneNumber, mailingAddress, billingAddress);
+            Assert(createResult.Success);
+            CheckUser(createResult.Response);
+            Assert(!await storageProvider.DoesAccountExits(userName));
+
+            var galleryController = new GalleryController();
+            var createAlbumResult = await galleryController.CreateAlbum(userName, albumName);
+            Assert(createAlbumResult.Success);
+            CheckAlbum(createAlbumResult.Response);
+            Assert(await storageProvider.DoesAccountExits(userName));
+
+            var albumDeleteTask1 = galleryController.DeleteAlbum(userName, albumName);
+            var albumDeleteTask2 = galleryController.DeleteAlbum(userName, albumName);
+            await Task.WhenAll(albumDeleteTask1, albumDeleteTask2);
+
+            Assert(albumDeleteTask1.Result.Success ^ albumDeleteTask2.Result.Success);
+            var album = albumDeleteTask1.Result.Success ?
+                albumDeleteTask1.Result.Response :
+                albumDeleteTask2.Result.Response;
+            CheckAlbum(album);
+
+            // Assert that even though the album has been deleted the storage account is still there
+            // as it should only be deleted when the user is deleted
+            Assert(await storageProvider.DoesAccountExits(userName));
         }
 
         [Microsoft.Coyote.SystematicTesting.TestIterationDispose]
