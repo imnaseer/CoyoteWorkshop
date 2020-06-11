@@ -28,6 +28,10 @@ namespace TinyService
 
         public async Task<ActionResult<User>> GetUser(string userName)
         {
+            // This method has been implemented for you as a reference.
+            // It teaches you how to use the various APIs and helper functions but is not
+            // guaranteed to be correct.
+
             var logger = new Logger(nameof(UserController));
 
             logger.Write("Get user " + userName);

@@ -52,6 +52,10 @@ namespace TinyService
 
         public async Task<ActionResult<Picture>> RetrievePicture(string userName, string albumName, string pictureName)
         {
+            // This method has been implemented for you as a reference.
+            // It teaches you how to use the various APIs and helper functions but is not
+            // guaranteed to be correct.
+
             var logger = new Logger(nameof(GalleryController));
 
             logger.Write("Retrieving picture " + userName + ", " + albumName + ", " + pictureName);
@@ -59,9 +63,39 @@ namespace TinyService
             var db = new DatabaseProvider("RetrievePicture", logger);
             var storage = new AzureStorageProvider("RetrievePicture", logger);
 
-            // TODO: Implement the logic
+            if (!await db.DoesDocumentExist(Constants.UserCollection, userName))
+            {
+                return new ActionResult<Picture>()
+                {
+                    Success = false
+                };
+            }
 
-            return null;
+            var userDoc = await db.GetDocument(Constants.UserCollection, userName);
+
+            if (!await storage.DoesContainerExist(userName, albumName))
+            {
+                return new ActionResult<Picture>()
+                {
+                    Success = false
+                };
+            }
+
+            if (!await storage.DoesBlobExist(userName, albumName, pictureName))
+            {
+                return new ActionResult<Picture>()
+                {
+                    Success = false
+                };
+            }
+
+            var pictureContents = await storage.GetBlobContents(userName, albumName, pictureName);
+
+            return new ActionResult<Picture>()
+            {
+                Success = true,
+                Response = new Picture(new Album(new User(userName, userDoc), albumName), pictureName, pictureContents)
+            };
         }
 
         public async Task<ActionResult<Picture>> DeletePicture(string userName, string albumName, string pictureName)
