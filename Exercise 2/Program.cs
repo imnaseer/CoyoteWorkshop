@@ -292,7 +292,7 @@ namespace TinyService
 
             Assert(deleteResult.Success);
             Assert(!await db.DoesDocumentExist(Constants.UserCollection, userName));
-            Assert(!await storage.DoesAccountExits(doc[Constants.UniqueId]));
+            Assert(!await storage.DoesAccountExits(userName));
         }
 
         [Microsoft.Coyote.SystematicTesting.Test]
