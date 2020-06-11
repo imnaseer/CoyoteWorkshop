@@ -66,6 +66,8 @@ for a higher number of iterations, though you might want to turn off verbosity i
 
   dotnet coyote.dll test TinyService.dll --method UserControllerConcurrencyFuzzing -i 1000 --max-steps 100
 
+Remember to run all the Coyote tests in a manner similar to how the above command runs UserControllerConcurrencyFuzzing test.
+
 ## Replaying Tests
 
 Typically, you'll find enough log lines in the output to figure out any bugs. If you can't figure

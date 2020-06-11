@@ -31,6 +31,8 @@ The above command runs the GalleryServiceConcurrencyFuzzing test for 10 iteratio
 
   dotnet coyote.dll test TinyService.dll --method GalleryServiceConcurrencyFuzzing -i 1000 --max-steps 100
 
+Remember to run all the Coyote tests in a manner similar to how the above command runs GalleryServiceConcurrencyFuzzing test.
+
 ## Replaying Tests
 
 Typically, you'll find enough log lines in the output to figure out any bugs. If you can't figure out from the console output and want to replay the buggy schedule in Visual Studio, you can do so using the following command:

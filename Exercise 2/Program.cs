@@ -196,6 +196,34 @@ namespace TinyService
         }
 
         [Microsoft.Coyote.SystematicTesting.Test]
+        public static async Task ConcurrentUserDeletes(ICoyoteRuntime runtime)
+        {
+            var userName = "user1";
+            var emailAddress = "bob@abc.com";
+            var phoneNumber = "425-123-1234";
+            var mailingAddress = "101 100th Ave NE Redmond WA";
+            var billingAddress = "101 100th Ave NE Redmond WA";
+
+            var userController = new UserController();
+            var createResult = await userController.CreateUser(userName, emailAddress, phoneNumber, mailingAddress, billingAddress);
+            Assert(createResult.Success);
+
+            var deleteTask1 = userController.DeleteUser(userName);
+            var deleteTask2 = userController.DeleteUser(userName);
+
+            Task.WaitAll(deleteTask1, deleteTask2);
+
+            Assert(deleteTask1.Result.Success ^ deleteTask2.Result.Success);
+
+            var successfulObject = deleteTask1.Result.Success ?
+                deleteTask1.Result.Response :
+                deleteTask2.Result.Response;
+
+            CheckUser(successfulObject);
+        }
+
+
+        [Microsoft.Coyote.SystematicTesting.Test]
         public static async Task DeleteWithConcurrentAPIs(ICoyoteRuntime runtime)
         {
             var userName = "user1";
