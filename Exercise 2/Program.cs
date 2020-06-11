@@ -355,7 +355,7 @@ namespace TinyService
             var pictureCreateTask2 = galleryController.UploadPicture(userName, albumName, pictureName, pictureContents);
             await Task.WhenAll(pictureCreateTask1, pictureCreateTask2);
 
-            Assert(pictureCreateTask1.Result.Success ^ pictureCreateTask1.Result.Success);
+            Assert(pictureCreateTask1.Result.Success ^ pictureCreateTask2.Result.Success);
 
             var picture = pictureCreateTask1.Result.Success ?
                 pictureCreateTask1.Result.Response :
