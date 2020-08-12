@@ -6,8 +6,17 @@ namespace TinyService
     using Document = ConcurrentDictionary<string, string>;
 
     // TODO: Implement the methods of the User Controller
+    // Remember that you are not supposed to have any try/catch blocks in your code in the controller.
     public class UserController
     {
+        // This method should create a user in the database if one doesn't already exist.
+        // If one doesn't exist, it should return an ActionResult<User> { Success = true, Response = user-object }
+        // If one already exists, it should return an ActionResult<User> { Success = false, Response = null }
+        // Note that you'll persist a Document object (which is just a dictionary of key/value pairs) for storing the user information 
+        // in the database. You can utilize a convenient User object constructor to convert the Document to the User object which has
+        // to be returned to the caller.
+        // 
+        // Remember that you are not supposed to have any try/catch blocks in your code.
         public async Task<ActionResult<User>> CreateUser(
             string userName,
             string email,
@@ -26,6 +35,12 @@ namespace TinyService
             return null;
         }
 
+        
+        // This method returns a user, if the user exists.
+        // If the user exists, it should return ActionResult<User> { Success = true, Response = user-object }
+        // If the user doesn't exist, it should return ActionResult<User> { Success = false, Response = null }
+        // 
+        // Remember that you are not supposed to have any try/catch blocks in your code.
         public async Task<ActionResult<User>> GetUser(string userName)
         {
             // This method has been implemented for you as a reference.
@@ -52,6 +67,12 @@ namespace TinyService
             };
         }
 
+        // This method should update the mailing and billing address of the given user, if the user exists.
+        // If the user exists, the addresses should be updated and ActionResult<User> { Success = true, Response = update-user-object} should
+        // be returned.
+        // If the user doesn't exist, this method should return ActionResult<User> { Success = false, Response = null }
+        //
+        // Remember that you are not supposed to have any try/catch blocks in your code.
         public async Task<ActionResult<Address>> UpdateUserAddress(string userName, string mailingAddress, string billingAddress)
         {
             var logger = new Logger(nameof(UserController));
@@ -65,6 +86,11 @@ namespace TinyService
             return null;
         }
 
+        // This method should delete the user, if the user exists.
+        // If the user exists, it should delete the user and return ActionResult<User> { Success = true, Response = user-object }
+        // If teh user doesn't exist, it should return ActionResult<User> { Success = false, Response = null }
+        //
+        // Remember that you are not supposed to have any try/catch blocks in your code.
         public async Task<ActionResult<User>> DeleteUser(string userName)
         {
             var logger = new Logger(nameof(UserController));

@@ -3,8 +3,14 @@
 namespace TinyService
 {
     // TODO: Implement the methods of the User Controller
+    // Remember that you are not supposed to have any try/catch blocks in your code in the controller.
     public class GalleryController
     {
+        // This method should create an album for a user, if the user exists, and if the album doesn't already exist.
+        // The album is created as a container inside a dedicated Azure storage account for the user. If the storage account
+        // doesn't exist, this method should create it lazily before creating the containe for the album.
+        //
+        // Note that the album information does not have to be persisted in the database.
         public async Task<ActionResult<Album>> CreateAlbum(string userName, string albumName)
         {
             var logger = new Logger(nameof(GalleryController));
@@ -22,6 +28,10 @@ namespace TinyService
             return null;
         }
 
+        // This method should delete the container corresponding to the given album, given the user exists
+        // and the container corresponding to the album exists.
+        //
+        // Note that no album information has to be persisted or removed from the database.
         public async Task<ActionResult<Album>> DeleteAlbum(string userName, string albumName)
         {
             var logger = new Logger(nameof(GalleryController));
@@ -36,6 +46,10 @@ namespace TinyService
             return null;
         }
 
+        // This method should upload a picture with a given name in the given album, if the album exists.
+        // It should not replace an existing picture.
+        // 
+        // Note that the picture information does not have to be persisted in the database.
         public async Task<ActionResult<Picture>> UploadPicture(string userName, string albumName, string pictureName, string pictureContents)
         {
             var logger = new Logger(nameof(GalleryController));
@@ -50,6 +64,9 @@ namespace TinyService
             return null;
         }
 
+        // This method should retrive the requested picture from the album, if it exists.
+        // It should look up the album and picture information through Azure Storage Provider APIs.
+        
         public async Task<ActionResult<Picture>> RetrievePicture(string userName, string albumName, string pictureName)
         {
             // This method has been implemented for you as a reference.
@@ -98,6 +115,9 @@ namespace TinyService
             };
         }
 
+        // This method should delete the given picture from the given album, if it exists.
+        // 
+        // Note that no picture information has to be persisted or removed from the database.
         public async Task<ActionResult<Picture>> DeletePicture(string userName, string albumName, string pictureName)
         {
             var logger = new Logger(nameof(GalleryController));
